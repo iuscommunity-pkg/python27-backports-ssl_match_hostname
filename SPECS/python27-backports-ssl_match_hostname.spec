@@ -11,12 +11,12 @@ Name:           python%{iusver}-backports-%{backport_name}
 Version:        3.4.0.2
 Release:        1.ius%{?dist}
 Summary:        The ssl.match_hostname() function from Python 3
+Group:          Applications/System
 Vendor:         IUS Community Project
-
 License:        Python
 URL:            https://bitbucket.org/brandon/backports.ssl_match_hostname
 Source0:        http://pypi.python.org/packages/source/b/%{srcname}/%{srcname}-%{version}.tar.gz
-
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python%{iusver}-devel
 BuildRequires:  python%{iusver}-setuptools
