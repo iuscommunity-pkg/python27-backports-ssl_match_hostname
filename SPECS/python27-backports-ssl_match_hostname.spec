@@ -1,17 +1,18 @@
-%define backport_name ssl_match_hostname
-%define srcname backports.%{backport_name}
-%define pymajor 2
-%define pyminor 7
-%define pyver %{pymajor}.%{pyminor}
-%define iusver %{pymajor}%{pyminor}
-%define __python %{_bindir}/python%{pyver}
-%define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
+%global pymajor 2
+%global pyminor 7
+%global pyver %{pymajor}.%{pyminor}
+%global iusver %{pymajor}%{pyminor}
+%global __python2 %{_bindir}/python%{pyver}
+%global python2_sitelib  %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
+%global python2_sitearch %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")
+%global backport_name ssl_match_hostname
+%global srcname backports.%{backport_name}
 
 Name:           python%{iusver}-backports-%{backport_name}
 Version:        3.4.0.2
 Release:        1.ius%{?dist}
 Summary:        The ssl.match_hostname() function from Python 3
-Group:          Applications/System
+Group:          Development/Languages
 Vendor:         IUS Community Project
 License:        Python
 URL:            https://bitbucket.org/brandon/backports.ssl_match_hostname
@@ -43,23 +44,25 @@ mv src/backports/ssl_match_hostname/LICENSE.txt ./
 
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
+CFLAGS="$RPM_OPT_FLAGS" %{__python2} setup.py build
 
 
 %install
-%{__python} setup.py install --optimize 1 --skip-build --root %{buildroot}
-rm %{buildroot}%{python_sitelib}/backports/__init__.py*
+%{__python2} setup.py install --optimize 1 --skip-build --root %{buildroot}
+rm %{buildroot}%{python2_sitelib}/backports/__init__.py*
 
  
 %files
 %defattr(-,root,root,-)
 %doc README.txt LICENSE.txt
-%{python_sitelib}/*
+%{python2_sitelib}/*
 
 
 %changelog
-* Tue May 06 2014 Carl George <carl.george@rackspace.com> - 3.4.0.2-1.ius
+* Wed May 07 2014 Carl George <carl.george@rackspace.com> - 3.4.0.2-1.ius
 - Initial port from Fedora to IUS
+- Define and use python2_sitelib and python2_sitearch
+- Switch to using globals
 
 * Sun Oct 27 2013 Toshio Kuratomi <toshio@fedoraproject.org> - 3.4.0.2-1
 - Update to upstream 3.4.0.2 for a security fix
