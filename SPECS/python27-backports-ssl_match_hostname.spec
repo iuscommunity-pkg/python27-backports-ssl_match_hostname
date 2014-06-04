@@ -5,12 +5,13 @@
 %global __python2 %{_bindir}/python%{pyver}
 %global python2_sitelib  %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %global python2_sitearch %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")
+%global __os_install_post %{__python27_os_install_post}
 %global backport_name ssl_match_hostname
 %global srcname backports.%{backport_name}
 
 Name:           python%{iusver}-backports-%{backport_name}
 Version:        3.4.0.2
-Release:        1.ius%{?dist}
+Release:        2.ius%{?dist}
 Summary:        The ssl.match_hostname() function from Python 3
 Group:          Development/Languages
 Vendor:         IUS Community Project
@@ -59,6 +60,9 @@ rm %{buildroot}%{python2_sitelib}/backports/__init__.py*
 
 
 %changelog
+* Wed Jun 04 2014 Carl George <carl.george@rackspace.com> - 3.4.0.2-2.ius
+- Override __os_install_post to fix .pyc/pyo magic
+
 * Wed May 07 2014 Carl George <carl.george@rackspace.com> - 3.4.0.2-1.ius
 - Initial port from Fedora to IUS
 - Define and use python2_sitelib and python2_sitearch
